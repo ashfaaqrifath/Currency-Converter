@@ -10,37 +10,45 @@ def convert_currency():
     print()
     print(Fore.YELLOW + " <<< CURRENCY CONVERTER >>> ")
     print()
-    user_currency = input(Fore.CYAN + " Enter your currency: ")
-    target_currency = input(Fore.CYAN + " Enter target currency: ")
+    if __name__ == "__main__":
 
-    while True:
-        try:
-            amount = float(input(Fore.YELLOW + " Enter amount: "))
-        except:
-            print(' The amount must be a numeric value!')
-            continue
+        while(1):
+            user_currency = input(Fore.CYAN + " Enter your currency: ")
+            target_currency = input(Fore.CYAN + " Enter target currency: ")
 
-        if not amount > 0:
-            print(' The amount must be greater than 0')
-            continue
-        else:
-            break
+            while True:
+                try:
+                    amount = float(input(Fore.YELLOW + " Enter amount: "))
+                except:
+                    print(Fore.BLACK + Back.RED + " The amount must be a numeric value! ")
+                    print()
+                    continue
 
-    url = ('https://api.apilayer.com/fixer/convert?to='
-          + target_currency + '&from=' + user_currency +
-          '&amount=' + str(amount))
-    
-    payload = {}
-    headers = {"apikey": "Re35bKIFhwFN1IqYC6D4skJUhoa5GS4R"}
-    response = requests.request("GET", url, headers=headers, data=payload)
-    status_code = response.status_code
+                if not amount > 0:
+                    print(Fore.BLACK + Back.RED + " The amount must be greater than 0 ")
+                    print()
+                    continue
+                else:
+                    break
 
-    if status_code != 200:
-        print(' Uh oh, there was a problem. Please try again later')
-        quit()
+            url = ("https://api.apilayer.com/fixer/convert?to="
+                + target_currency + '&from=' + user_currency +
+                '&amount=' + str(amount))
+            
+            payload = {}
+            headers = {"apikey": "YOUR API KEY"}
+            response = requests.request("GET", url, headers=headers, data=payload)
+            status_code = response.status_code
+            trgt_crrncy = target_currency.upper()
 
-    result = response.json()
-    print(Fore.GREEN + ' Conversion result: ' + str(result['result']))
+            if status_code != 200:
+                print(Fore.BLACK + Back.RED + " There was an error. Please try again later ")
+                print()
+                quit()
 
+            result = response.json()
+            print()
+            print(Fore.BLACK + Back.GREEN + " Conversion result: " + trgt_crrncy + " " + str(result["result"]) + " ")
+            print()
 
 convert_currency()
